@@ -7,8 +7,11 @@ import processing.core.PApplet;
 public class Logica implements Observer{
 PApplet app;
 
+
 	public Logica(PApplet app) {
 		this.app=app;
+		Comunicacion.getInstance();
+		Comunicacion.getInstance().addObserver(this);
 	}
 	
 	public void pintar(){

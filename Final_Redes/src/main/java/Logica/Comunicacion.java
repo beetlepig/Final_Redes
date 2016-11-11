@@ -11,7 +11,7 @@ import java.util.Observable;
 public class Comunicacion extends Observable implements Runnable {
 	private static Comunicacion referencia;
 	private Socket socket;
-	private String ip = "172.30.177.93";
+	private String ip = "localhost";
 	private short puerto = 5000;
 	private boolean corriendo;
 	private boolean conectando;
@@ -19,11 +19,13 @@ public class Comunicacion extends Observable implements Runnable {
     private Comunicacion() {
         socket = null;
         corriendo = true;
+        conectando=true;
     }
     
     public static Comunicacion getInstance() {
         if(referencia == null){
             referencia =  new Comunicacion();
+            System.out.println("Referencia creada");
             Thread t =  new Thread(referencia);
             t.start();
         }
@@ -44,7 +46,7 @@ public class Comunicacion extends Observable implements Runnable {
             return false;
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[ ERROR AL ESTABLECER LA CONEXIÓN ]");
+            System.out.println("[ ERROR AL ESTABLECER LA CONEXIÓN, SERVIDOR NO DISPONIBLE ]");
             
             return false;
         }
@@ -57,43 +59,43 @@ public class Comunicacion extends Observable implements Runnable {
         Object in = dis.readObject();
         return in;
     }
-
-	public void run() {
-		 
-	        while (corriendo) {
-	            try {
-	                if (conectando) {
-	                	
-	                    conectando = !conectar();
-	                    
-	                } else {
-	                    if (socket != null) {
-	                        recibir();
-	                        //notificar
-	                    }
-	                }
-	                Thread.sleep(33);
-	            } catch (SocketTimeoutException e) {
-	                //Log.d(TAG, "[ SE PERDIÓ LA CONEXIÓN CON EL SERVIDOR ]");
-	                //corriendo = false;
-	                 e.printStackTrace();
-	            } catch (IOException e) {
-	                System.out.println("[ SE PERDIÓ LA CONEXIÓN CON EL SERVIDOR ]");
-	                e.printStackTrace();
-	                //notifyObservers("no_conectado");
-	                //clearChanged();
-	                //corriendo = false;
-	                
-	            } catch (InterruptedException e) {
-	                 e.printStackTrace();
-	               //setChanged();
-	                System.out.println("[ INTERRUPCIÓN ]");
-	            } catch (ClassNotFoundException e){
-	                e.printStackTrace();
-	            }
-	        }
-
-	        try {
+    
+    public void run(){
+    	while(corriendo){
+    		try {
+                if (conectando && socket==null) {
+                	
+                    conectando = !conectar();
+                   
+                    
+                } else if(socket != null) {
+                    
+                    	System.out.println("EntroRecibir");
+                        recibir();
+                        //notificar
+                    }
+                
+    		Thread.sleep(33);
+    		} catch (SocketTimeoutException e) {
+                //Log.d(TAG, "[ SE PERDIÓ LA CONEXIÓN CON EL SERVIDOR ]");
+                //corriendo = false;
+                 e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("[ SE PERDIÓ LA CONEXIÓN CON EL SERVIDOR ]");
+                e.printStackTrace();
+                //notifyObservers("no_conectado");
+                //clearChanged();
+                //corriendo = false;
+                
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+              //setChanged();
+               System.out.println("[ INTERRUPCIÓN ]");
+           } catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+    }
+    	 try {
 	            socket.close();
 	        } catch (IOException e) {
 	            e.printStackTrace();
@@ -101,7 +103,13 @@ public class Comunicacion extends Observable implements Runnable {
 	        } finally {
 	            socket = null;
 	        }
+    }
+    	
+
+	
+
+	       
 		
 	}
 
-}
+

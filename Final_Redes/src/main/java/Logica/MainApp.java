@@ -8,7 +8,7 @@ static Logica log;
 		}
 	
 	public void settings(){
-		size(1200,700);
+		size(1200,700,P3D);
 	}
 	
 	public void setup(){

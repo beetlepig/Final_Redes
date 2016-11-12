@@ -32,11 +32,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/test/java/lib/minim2.2.2/jl1.0.1.jar"/>
-	<classpathentry kind="lib" path="src/test/java/lib/minim2.2.2/jsminim.jar"/>
-	<classpathentry kind="lib" path="src/test/java/lib/minim2.2.2/minim.jar"/>
-	<classpathentry kind="lib" path="src/test/java/lib/minim2.2.2/mp3spi1.9.5.jar"/>
-	<classpathentry kind="lib" path="src/test/java/lib/minim2.2.2/tritonus_aos.jar"/>
-	<classpathentry kind="lib" path="src/test/java/lib/minim2.2.2/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/jsminim.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/minim.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/tritonus_aos.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/tritonus_share.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -34,7 +34,11 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/jsminim.jar"/>
-	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/minim.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/minim.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://code.compartmental.net/minim/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/mp3spi1.9.5.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/tritonus_aos.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/minim2.2.2/tritonus_share.jar"/>

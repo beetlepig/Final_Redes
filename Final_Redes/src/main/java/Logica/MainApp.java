@@ -1,4 +1,6 @@
 package Logica;
+import java.io.File;
+
 import processing.core.PApplet;
 
 public class MainApp extends PApplet {
@@ -12,7 +14,9 @@ static Logica log;
 	}
 	
 	public void setup(){
+		
 		log= new Logica(this);
+		ellipseMode(RADIUS);
 		
 	}
 	

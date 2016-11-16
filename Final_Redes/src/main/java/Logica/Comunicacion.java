@@ -1,5 +1,6 @@
 package Logica;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetAddress;
@@ -26,8 +27,7 @@ public class Comunicacion extends Observable implements Runnable {
         if(referencia == null){
             referencia =  new Comunicacion();
             System.out.println("Referencia creada");
-            Thread t =  new Thread(referencia);
-            t.start();
+           
         }
         return referencia;
     }
@@ -55,8 +55,11 @@ public class Comunicacion extends Observable implements Runnable {
     
     private Object recibir() throws IOException, ClassNotFoundException{
         System.out.println("entroRecibir");
-        ObjectInputStream dis = new ObjectInputStream(socket.getInputStream());
+        ObjectInputStream dis = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
         Object in = dis.readObject();
+        if(in!=null){
+        	System.out.println("llego un objeto");
+        }
         return in;
     }
     
@@ -70,9 +73,14 @@ public class Comunicacion extends Observable implements Runnable {
                     
                 } else if(socket != null) {
                     
-                    	System.out.println("EntroRecibir");
-                        recibir();
+                    	
+                     Object o=   recibir();
                         //notificar
+                     if(o!=null){
+                        setChanged();
+                        notifyObservers(o);
+                        clearChanged();
+                     }
                     }
                 
     		Thread.sleep(33);

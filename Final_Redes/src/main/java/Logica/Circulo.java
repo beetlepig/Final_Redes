@@ -15,8 +15,8 @@ public class Circulo implements Runnable{
 	float eRadius;
 	//tempo provicional
 	short segundosTempo=10;
-	//puede tocar provicional
-	private boolean puedeTocar=true;
+
+	boolean puedeTocar=false;
 	public Circulo(Logica mundo) {
 		this.mundo=mundo;
 		minim= new Minim(this.mundo.app);
@@ -25,26 +25,39 @@ public class Circulo implements Runnable{
 		
 		song = minim.loadFile(classLoader.getResource("sounds/Percusion/percusionSOL.wav").getPath(), 2048);
 		
-		song.play();
+
 		
 		beat= new BeatDetect();
 		new Thread(this).start();
 		
 	}
 	
-	public void sonarNota(){
-	//	System.out.println(centecimas);
+	public boolean sonarNota(){
+//	System.out.println(centecimas);
 	//	System.out.println(song.isPlaying());
 		if(!song.isPlaying() && puedeTocar){
-			song.cue(0); song.play();
+			song.cue(0); 
+			song.play();
+			
 		}
+		
+		
 		if(song.isPlaying() && centecimas==segundosTempo){
-			song.pause(); song.rewind(); song.pause(); centecimas=0;
+			puedeTocar=false;
+			song.pause(); 
+			song.rewind(); 
+			song.pause(); 
+			centecimas=0;
+		
+			return true;
 		}
+		return false;
 	}
 	
+	
+	
 	public void iniciarPlay(){
-		
+		song.play();
 	}
 	
 	public void pintar(){

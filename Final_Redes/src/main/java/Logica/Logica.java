@@ -39,11 +39,32 @@ Thread hiloLogica;
 	
 	public void pintar(){
 		percucionClase.pintar();
-		percucionClase.sonarNota();
+		
+
 	}
 	
 	private void controlarTempos(){
-		
+	
+		if(!percucion.isEmpty()){
+		if(!percucionClase.song.isPlaying()){
+			
+				NotaMusical not = percucion.get(0);
+				if(not.getDuracion()==not.NEGRA){
+					percucionClase.segundosTempo=5;
+				}else if(not.getDuracion()==not.BLANCA){
+					percucionClase.segundosTempo=10;
+				}else if(not.getDuracion()==not.REDONDA){
+					percucionClase.segundosTempo=20;
+				}else if(not.getDuracion()==not.CORCHEA){
+					percucionClase.segundosTempo=3;
+				}
+			
+			percucionClase.puedeTocar=true;
+		}
+		}
+		System.out.println("elementos en cola:"+ percucion.size() );
+	
+
 	}
 	
 private void comprobarTipoDeInstrumento(){
@@ -57,6 +78,7 @@ private void comprobarTipoDeInstrumento(){
 		    	  System.out.println();
 		    	  System.out.println("Se agrego a la cola de percusion");
 		    	  System.out.println("Cantidad de elementos en cola de percusion:"+percucion.size());
+		    	  
 		      }
 			
 		}
@@ -65,15 +87,15 @@ private void comprobarTipoDeInstrumento(){
 
 
 	public void update(Observable arg0, Object arg1) {
-		
+		System.out.println();
+		System.out.println("llego objeto update:"+ arg1);
 		if(arg1 instanceof NotaMusical){
 			notasEntrantes.add((NotaMusical) arg1);
 			comprobarTipoDeInstrumento();
 			
 		}
 		
-		System.out.println();
-		System.out.println("llego objeto update:"+ arg1);
+	
 		
 	}
 
@@ -81,8 +103,13 @@ private void comprobarTipoDeInstrumento(){
 		try{
 			while(true){
 				controlarTempos();
+				if(percucionClase.sonarNota()){
+					if(!percucion.isEmpty()){
+					percucion.remove(percucion.get(0));
+					}
+				}
 			//	comprobarTipoDeInstrumento();
-				Thread.sleep(50);
+				Thread.sleep(33);
 			}
 			
 			

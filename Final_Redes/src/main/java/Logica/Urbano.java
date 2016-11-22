@@ -1,12 +1,11 @@
 package Logica;
 
-
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import processing.core.PApplet;
 
-public class Circulo implements Runnable{
+public class Urbano implements Runnable{
 	AudioPlayer song;
 	short centecimas=0;
 	BeatDetect beat;
@@ -17,7 +16,7 @@ public class Circulo implements Runnable{
 	short segundosTempo=10;
 	ClassLoader classLoader;
 	boolean puedeTocar=false;
-	public Circulo(Logica mundo) {
+	public Urbano(Logica mundo) {
 		this.mundo=mundo;
 		minim= new Minim(this.mundo.app);
 		

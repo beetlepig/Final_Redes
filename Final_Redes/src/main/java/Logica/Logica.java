@@ -1,12 +1,10 @@
 package Logica;
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
-import ddf.minim.analysis.BeatDetect;
 import processing.core.PApplet;
 import programaciondmi.per.modelo.Instrumento;
 import programaciondmi.per.modelo.NotaMusical;
@@ -49,20 +47,41 @@ Thread hiloLogica;
 		if(!percucionClase.song.isPlaying()){
 			
 				NotaMusical not = percucion.get(0);
+				if(not.getNota()== not.DO){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionDO.wav").getPath(), 2048);
+				} else if(not.getNota()== not.RE){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionRE.mp3").getPath(), 2048);
+				} else if(not.getNota()== not.MI){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionMI.mp3").getPath(), 2048);
+				} else if(not.getNota()== not.FA){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionFA.mp3").getPath(), 2048);
+				} else if(not.getNota()== not.SOL){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionSOL.mp3").getPath(), 2048);
+				} else if(not.getNota()== not.LA){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionLA.mp3").getPath(), 2048);
+				} else if(not.getNota()== not.SI){
+					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionSI.mp3").getPath(), 2048);
+				}
 				if(not.getDuracion()==not.NEGRA){
-					percucionClase.segundosTempo=5;
+					percucionClase.segundosTempo=6;
 				}else if(not.getDuracion()==not.BLANCA){
-					percucionClase.segundosTempo=10;
+					percucionClase.segundosTempo=12;
 				}else if(not.getDuracion()==not.REDONDA){
-					percucionClase.segundosTempo=20;
+					percucionClase.segundosTempo=24;
 				}else if(not.getDuracion()==not.CORCHEA){
+					percucionClase.segundosTempo=4;
+				}else if(not.getDuracion()== not.SEMICORCHEA){
 					percucionClase.segundosTempo=3;
+				}else if(not.getDuracion()== not.FUSA){
+					percucionClase.segundosTempo=2;
+				}else if(not.getDuracion()== not.SEMIFUSA){
+					percucionClase.segundosTempo=1;
 				}
 			
 			percucionClase.puedeTocar=true;
 		}
 		}
-		System.out.println("elementos en cola:"+ percucion.size() );
+	//	System.out.println("elementos en cola:"+ percucion.size() );
 	
 
 	}
@@ -109,7 +128,7 @@ private void comprobarTipoDeInstrumento(){
 					}
 				}
 			//	comprobarTipoDeInstrumento();
-				Thread.sleep(33);
+				Thread.sleep(5);
 			}
 			
 			

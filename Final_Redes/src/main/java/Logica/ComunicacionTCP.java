@@ -55,7 +55,7 @@ public class ComunicacionTCP extends Observable {
 		ObjectInputStream entrada = null;
 		Object mensaje=null;
 		try {
-			entrada = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
+			entrada = new ObjectInputStream(s.getInputStream());
 			mensaje = entrada.readObject();
 			System.out.println("Se recibio: " + mensaje);
 
@@ -75,6 +75,7 @@ public class ComunicacionTCP extends Observable {
 				*/
 			
 			}
+			
 			
 		} catch (IOException e) {
 			try {

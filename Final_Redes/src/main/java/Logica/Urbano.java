@@ -22,7 +22,7 @@ public class Urbano implements Runnable{
 		
 		classLoader = getClass().getClassLoader();
 		
-		song = minim.loadFile(classLoader.getResource("sounds/Percusion/percusionSOL.mp3").getPath(), 2048);
+		song = minim.loadFile(classLoader.getResource("sounds/Urbano/urbanoSOL.mp3").getPath(), 2048);
 		
 
 		
@@ -32,7 +32,7 @@ public class Urbano implements Runnable{
 	}
 	
 	public void cargarSonido(String filename){
-		song = minim.loadFile(classLoader.getResource("sounds/Percusion/" + filename).getPath(), 2048);
+		song = minim.loadFile(classLoader.getResource("sounds/Urbano/" + filename).getPath(), 2048);
 	}
 	
 	public boolean sonarNota(){
@@ -68,7 +68,7 @@ public class Urbano implements Runnable{
 		  float a = PApplet.map(eRadius, 20, 80, 60, 255);
 		  mundo.app.fill(60, 255, 0, a);
 		  if ( beat.isOnset() ) eRadius = 80;
-		  mundo.app.ellipse(100, 600, eRadius, eRadius);
+		  mundo.app.ellipse(1000, 600, eRadius, eRadius);
 		  eRadius *= 0.95;
 		  if ( eRadius < 20 ) eRadius = 20;
 	}

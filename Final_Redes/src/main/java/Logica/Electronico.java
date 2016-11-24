@@ -31,7 +31,7 @@ public class Electronico implements Runnable{
 		
 
 		
-		posicion= new PVector(300,670);
+		posicion= new PVector(600,670);
 		velocidad= new PVector(0,0);
 		aceleracion= new PVector(0,0);
 		
@@ -95,7 +95,7 @@ public class Electronico implements Runnable{
 			public void run() {
 				try{
 					disponibleParaSalto=false;
-				magTempo=	PApplet.map(segundosTempo, 1, 24, 2.3F, 0.1F);
+				magTempo=	PApplet.map(segundosTempo, 1, 24, 2.5F, 0.2F);
 				magTempoFix= PApplet.map(magTempo, 2.5F, 0.1F, 0.4F, 0.007F);
 				while(!termino){
 					
@@ -115,7 +115,7 @@ public class Electronico implements Runnable{
 						aceleracion.setMag(magTempo-magTempoFix);
 						velocidad.add(aceleracion);
 						posicion.add(velocidad);
-						if(posicion.y>=670){
+						if(posicion.y>=660){
 							aceleracion.set(0,0);
 							velocidad.set(0,0);
 							termino=true;

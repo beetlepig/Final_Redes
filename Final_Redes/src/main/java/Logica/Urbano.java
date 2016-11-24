@@ -80,7 +80,7 @@ public class Urbano implements Runnable{
 		  float a = PApplet.map(eRadius, 20, 80, 60, 255);
 		  mundo.app.fill(60, 255, 0, a);
 		  if ( beat.isOnset() ) eRadius = 80;
-		  mundo.app.ellipse(300, 300, eRadius, eRadius);
+		  mundo.app.ellipse(1100, 600, eRadius, eRadius);
 		  eRadius *= 0.95;
 		  if ( eRadius < 20 ) eRadius = 20;
 	}

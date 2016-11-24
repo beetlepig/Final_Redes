@@ -1,6 +1,7 @@
 package Logica;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,19 +13,28 @@ import programaciondmi.per.modelo.NotaMusical;
 public class Logica implements Observer, Runnable{
 PApplet app;
 
-ArrayList<NotaMusical> notasEntrantes;
-ArrayList<NotaMusical> percucion;
-ArrayList<NotaMusical> urbano;
+LinkedList<NotaMusical> notasEntrantes;
+LinkedList<NotaMusical> percucion;
+LinkedList<NotaMusical> urbano;
+LinkedList<NotaMusical> electronico;
+
+
 Instrumento instrumentoAsignado;
+
+
 Circulo percucionClase;
 Urbano urbanoClse;
+Electronico electronicoClase;
+
 ComunicacionTCP tcp;
 Thread hilito;
 Thread hiloLogica;
 	public Logica(PApplet app) {
-		notasEntrantes= new ArrayList<NotaMusical>();
-		percucion= new ArrayList<NotaMusical>();
-		urbano= new ArrayList<NotaMusical>();
+		notasEntrantes= new LinkedList<NotaMusical>();
+		percucion= new LinkedList<NotaMusical>();
+		urbano= new LinkedList<NotaMusical>();
+		electronico=new LinkedList<NotaMusical>();
+		
 	tcp= new ComunicacionTCP();
 	hilito= new Thread(tcp.hilo());
 	hilito.start();
@@ -36,6 +46,8 @@ Thread hiloLogica;
 		
 		percucionClase= new Circulo(this);
 		urbanoClse= new Urbano(this);
+		electronicoClase= new Electronico(this);
+		
 		hiloLogica=new Thread(this);
 		hiloLogica.start();
 	}
@@ -43,6 +55,7 @@ Thread hiloLogica;
 	public void pintar(){
 		percucionClase.pintar();
 		urbanoClse.pintar();
+		electronicoClase.pintar();
 
 	}
 	
@@ -127,6 +140,49 @@ Thread hiloLogica;
 				urbanoClse.puedeTocar=true;
 		}
 		}
+		
+		
+		
+		if(!electronico.isEmpty()){
+			if(!electronicoClase.song.isPlaying()){
+				
+				NotaMusical not = electronico.get(0);
+				if(not.getNota()== NotaMusical.DO){
+					electronicoClase.cargarSonido("electricoDO.mp3");
+				} else if(not.getNota()== NotaMusical.RE){
+					electronicoClase.cargarSonido("electricoRE.mp3");
+				} else if(not.getNota()== NotaMusical.MI){
+					electronicoClase.cargarSonido("electricoMI.mp3");
+				} else if(not.getNota()== NotaMusical.FA){
+					electronicoClase.cargarSonido("electricoFA.mp3");
+				} else if(not.getNota()== NotaMusical.SOL){
+					electronicoClase.cargarSonido("electricoSOL.mp3");
+				} else if(not.getNota()== NotaMusical.LA){
+					electronicoClase.cargarSonido("electricoLA.mp3");
+				} else if(not.getNota()== NotaMusical.SI){
+					electronicoClase.cargarSonido("electricoSI.wav");
+				}
+				
+				if(not.getDuracion()==NotaMusical.NEGRA){
+					electronicoClase.segundosTempo=6;
+				}else if(not.getDuracion()==NotaMusical.BLANCA){
+					electronicoClase.segundosTempo=12;
+				}else if(not.getDuracion()==NotaMusical.REDONDA){
+					electronicoClase.segundosTempo=24;
+				}else if(not.getDuracion()==NotaMusical.CORCHEA){
+					electronicoClase.segundosTempo=4;
+				}else if(not.getDuracion()== NotaMusical.SEMICORCHEA){
+					electronicoClase.segundosTempo=3;
+				}else if(not.getDuracion()== NotaMusical.FUSA){
+					electronicoClase.segundosTempo=2;
+				}else if(not.getDuracion()== NotaMusical.SEMIFUSA){
+					electronicoClase.segundosTempo=1;
+				}
+			
+				electronicoClase.puedeTocar=true;
+		}
+		}
+		
 	//	System.out.println("elementos en cola:"+ percucion.size() );
 	
 
@@ -150,6 +206,12 @@ private void comprobarTipoDeInstrumento(){
 		    	  System.out.println();
 		    	  System.out.println("Se agrego a la cola de Urbano");
 		    	  System.out.println("Cantidad de elementos en cola de Urbano:"+urbano.size());
+		      }else if(ins.getTipo()== Instrumento.TIPO_ELECTRONICO){
+		    	  electronico.add(notita);
+		    	  notasEntrantes.remove(notita);
+		    	  System.out.println();
+		    	  System.out.println("Se agrego a la cola de Electronico");
+		    	  System.out.println("Cantidad de elementos en cola de Electronico:"+urbano.size());
 		      }
 			
 		}
@@ -164,6 +226,8 @@ private void comprobarTipoDeInstrumento(){
 			notasEntrantes.add((NotaMusical) arg1);
 			comprobarTipoDeInstrumento();
 			
+		}else if(arg1 instanceof Instrumento){
+		 instrumentoAsignado= (Instrumento) arg1;
 		}
 		
 	
@@ -183,6 +247,12 @@ private void comprobarTipoDeInstrumento(){
 				if(urbanoClse.sonarNota()){
 					if(!urbano.isEmpty()){
 					urbano.remove(urbano.get(0));
+					}
+				}
+				
+				if(electronicoClase.sonarNota()){
+					if(!electronico.isEmpty()){
+					electronico.remove(electronico.get(0));
 					}
 				}
 			//	comprobarTipoDeInstrumento();

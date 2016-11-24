@@ -4,6 +4,7 @@ import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Electronico implements Runnable{
 	AudioPlayer song;
@@ -11,13 +12,16 @@ public class Electronico implements Runnable{
 	BeatDetect beat;
 	Logica mundo;
 	Minim minim;
-	float eRadius;
+	PVector posicion;
+	PVector velocidad;
+	PVector aceleracion;
+	boolean disponibleParaSalto=true;;
 	//tempo provicional
 	short segundosTempo=10;
 	ClassLoader classLoader;
 	boolean puedeTocar=false;
+	boolean puedereiniciar=true;
 	public Electronico(Logica mundo) {
-		
 		this.mundo=mundo;
 		minim= new Minim(this.mundo.app);
 		
@@ -26,6 +30,11 @@ public class Electronico implements Runnable{
 		song = minim.loadFile(classLoader.getResource("sounds/Electronico/electricoSOL.mp3").getPath(), 2048);
 		
 
+		
+		posicion= new PVector(300,670);
+		velocidad= new PVector(0,0);
+		aceleracion= new PVector(0,0);
+		
 		
 		beat= new BeatDetect();
 		new Thread(this).start();
@@ -37,26 +46,35 @@ public class Electronico implements Runnable{
 	}
 	
 	public boolean sonarNota(){
-//	System.out.println(centecimas);
-	//	System.out.println(song.isPlaying());
-		if(!song.isPlaying() && puedeTocar){
-			song.cue(0); 
-			song.play();
+//		System.out.println(centecimas);
+		//	System.out.println(song.isPlaying());
+			if(!song.isPlaying() && puedeTocar){
+				if(puedereiniciar){
+				
+				song.play();
+				
+				puedereiniciar=false;
+				}
+				
+			}
 			
+			
+			
+			
+			if(centecimas==segundosTempo){
+				song.rewind();
+				puedeTocar=false;
+				song.pause(); 
+			
+			
+				
+				centecimas=0;
+				
+			
+				return true;
+			}
+			return false;
 		}
-		
-		
-		if(song.isPlaying() && centecimas==segundosTempo){
-			puedeTocar=false;
-			song.pause(); 
-			song.rewind(); 
-			song.pause(); 
-			centecimas=0;
-		
-			return true;
-		}
-		return false;
-	}
 	
 	
 	
@@ -64,15 +82,72 @@ public class Electronico implements Runnable{
 		song.play();
 	}
 	
+
+	
+	private void animacionSalto(){
+		new Thread(new Runnable() {
+			boolean termino=false;
+			boolean llego=false;
+			float magTempo=0;
+			float magTempoFix=0;
+			
+			@Override
+			public void run() {
+				try{
+					disponibleParaSalto=false;
+				magTempo=	PApplet.map(segundosTempo, 1, 24, 2.3F, 0.1F);
+				magTempoFix= PApplet.map(magTempo, 2.5F, 0.1F, 0.4F, 0.007F);
+				while(!termino){
+					
+					
+					if(!llego){
+					   aceleracion.set(0,-10);
+					   aceleracion.setMag(magTempo+magTempoFix);
+					   velocidad.add(aceleracion);
+					   posicion.add(velocidad);
+					  
+					   if(posicion.y<=600){
+						   llego=true;
+					   }
+					
+					}else{
+						aceleracion.set(0,10);
+						aceleracion.setMag(magTempo-magTempoFix);
+						velocidad.add(aceleracion);
+						posicion.add(velocidad);
+						if(posicion.y>=670){
+							aceleracion.set(0,0);
+							velocidad.set(0,0);
+							termino=true;
+							disponibleParaSalto=true;
+							
+						}
+					}
+					
+					
+					Thread.sleep(17);
+				}
+				
+				}catch (InterruptedException e) {
+					// TODO: handle exception
+				}
+				
+			}
+		}).start();
+		
+	}
+	
 	public void pintar(){
 		beat.detect(song.mix);
 		
-		  float a = PApplet.map(eRadius, 20, 80, 60, 255);
-		  mundo.app.fill(60, 255, 0, a);
-		  if ( beat.isOnset() ) eRadius = 80;
-		  mundo.app.ellipse(300, 300, eRadius, eRadius);
-		  eRadius *= 0.95;
-		  if ( eRadius < 20 ) eRadius = 20;
+		  mundo.app.fill(60, 255, 100);
+		  if ( beat.isOnset() ){
+			  if(disponibleParaSalto){
+			 animacionSalto();
+			  }
+		  }
+		  mundo.app.ellipse(posicion.x, posicion.y, 20, 20);
+		  
 	}
 
 	public void run() {
@@ -97,4 +172,3 @@ public class Electronico implements Runnable{
 
 
 }
-

@@ -21,10 +21,13 @@ LinkedList<NotaMusical> electronico;
 
 Instrumento instrumentoAsignado;
 
+NotaMusical tempPercusion;
+NotaMusical tempUrbano;
+NotaMusical tempElectronico;
 
 Circulo percucionClase;
-Urbano urbanoClse;
 Electronico electronicoClase;
+Urbano urbanoClse;
 
 ComunicacionTCP tcp;
 Thread hilito;
@@ -62,9 +65,10 @@ Thread hiloLogica;
 	private void controlarTempos(){
 	
 		if(!percucion.isEmpty()){
-		if(!percucionClase.song.isPlaying()){
+		if(!percucionClase.song.isPlaying() && (tempPercusion!=percucion.get(0) || tempPercusion==null)){
 			
 				NotaMusical not = percucion.get(0);
+				tempPercusion= not;
 				if(not.getNota()== NotaMusical.DO){
 					percucionClase.song= percucionClase.minim.loadFile(percucionClase.classLoader.getResource("sounds/Percusion/percusionDO.wav").getPath(), 2048);
 				} else if(not.getNota()== NotaMusical.RE){
@@ -97,14 +101,16 @@ Thread hiloLogica;
 				}
 			
 			percucionClase.puedeTocar=true;
+			percucionClase.puedereiniciar=true;
 		}
 		}
 		
 		
 		if(!urbano.isEmpty()){
-			if(!urbanoClse.song.isPlaying()){
+			if(!urbanoClse.song.isPlaying() && (tempUrbano!=urbano.get(0) || tempUrbano==null)){
 				
 				NotaMusical not = urbano.get(0);
+				tempPercusion= not;
 				if(not.getNota()== NotaMusical.DO){
 					urbanoClse.cargarSonido("urbanoDO.mp3");
 				} else if(not.getNota()== NotaMusical.RE){
@@ -138,17 +144,19 @@ Thread hiloLogica;
 				}
 			
 				urbanoClse.puedeTocar=true;
+				urbanoClse.puedereiniciar=true;
 		}
 		}
 		
 		
 		
-		if(!electronico.isEmpty()){
+		if(!electronico.isEmpty() && (tempElectronico!=electronico.get(0) || tempElectronico==null)){
 			if(!electronicoClase.song.isPlaying()){
 				
 				NotaMusical not = electronico.get(0);
+				tempElectronico= not;
 				if(not.getNota()== NotaMusical.DO){
-					electronicoClase.cargarSonido("electricoDO.mp3");
+					electronicoClase.cargarSonido("electricoDO.wav");
 				} else if(not.getNota()== NotaMusical.RE){
 					electronicoClase.cargarSonido("electricoRE.mp3");
 				} else if(not.getNota()== NotaMusical.MI){
@@ -180,6 +188,7 @@ Thread hiloLogica;
 				}
 			
 				electronicoClase.puedeTocar=true;
+				electronicoClase.puedereiniciar=true;
 		}
 		}
 		
@@ -211,7 +220,7 @@ private void comprobarTipoDeInstrumento(){
 		    	  notasEntrantes.remove(notita);
 		    	  System.out.println();
 		    	  System.out.println("Se agrego a la cola de Electronico");
-		    	  System.out.println("Cantidad de elementos en cola de Electronico:"+urbano.size());
+		    	  System.out.println("Cantidad de elementos en cola de Electronico:"+electronico.size());
 		      }
 			
 		}
@@ -256,7 +265,7 @@ private void comprobarTipoDeInstrumento(){
 					}
 				}
 			//	comprobarTipoDeInstrumento();
-				Thread.sleep(5);
+				Thread.sleep(17);
 			}
 			
 			

@@ -4,7 +4,6 @@ import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import processing.core.PApplet;
-import processing.core.PVector;
 
 public class Urbano implements Runnable{
 	AudioPlayer song;
@@ -13,14 +12,13 @@ public class Urbano implements Runnable{
 	Logica mundo;
 	Minim minim;
 	float eRadius;
-	PVector posicion;
-	PVector velocidad;
-	PVector aceleracion;
 	//tempo provicional
 	short segundosTempo=10;
 	ClassLoader classLoader;
 	boolean puedeTocar=false;
+	boolean puedereiniciar=true;
 	public Urbano(Logica mundo) {
+		
 		this.mundo=mundo;
 		minim= new Minim(this.mundo.app);
 		
@@ -29,11 +27,6 @@ public class Urbano implements Runnable{
 		song = minim.loadFile(classLoader.getResource("sounds/Urbano/urbanoSOL.mp3").getPath(), 2048);
 		
 
-		
-		posicion= new PVector(670,300);
-		velocidad= new PVector(0,0);
-		aceleracion= new PVector(0,0);
-		
 		
 		beat= new BeatDetect();
 		new Thread(this).start();
@@ -45,26 +38,35 @@ public class Urbano implements Runnable{
 	}
 	
 	public boolean sonarNota(){
-//	System.out.println(centecimas);
-	//	System.out.println(song.isPlaying());
-		if(!song.isPlaying() && puedeTocar){
-			song.cue(0); 
-			song.play();
+//		System.out.println(centecimas);
+		//	System.out.println(song.isPlaying());
+			if(!song.isPlaying() && puedeTocar){
+				if(puedereiniciar){
+				
+				song.play();
+				
+				puedereiniciar=false;
+				}
+				
+			}
 			
+			
+			
+			
+			if(centecimas==segundosTempo){
+				song.rewind();
+				puedeTocar=false;
+				song.pause(); 
+			
+			
+				
+				centecimas=0;
+				
+			
+				return true;
+			}
+			return false;
 		}
-		
-		
-		if(song.isPlaying() && centecimas==segundosTempo){
-			puedeTocar=false;
-			song.pause(); 
-			song.rewind(); 
-			song.pause(); 
-			centecimas=0;
-		
-			return true;
-		}
-		return false;
-	}
 	
 	
 	
@@ -74,10 +76,11 @@ public class Urbano implements Runnable{
 	
 	public void pintar(){
 		beat.detect(song.mix);
+		
 		  float a = PApplet.map(eRadius, 20, 80, 60, 255);
 		  mundo.app.fill(60, 255, 0, a);
 		  if ( beat.isOnset() ) eRadius = 80;
-		  mundo.app.ellipse(1000, 600, eRadius, eRadius);
+		  mundo.app.ellipse(300, 300, eRadius, eRadius);
 		  eRadius *= 0.95;
 		  if ( eRadius < 20 ) eRadius = 20;
 	}
@@ -104,3 +107,4 @@ public class Urbano implements Runnable{
 
 
 }
+

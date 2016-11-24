@@ -17,6 +17,7 @@ public class Circulo implements Runnable{
 	short segundosTempo=10;
 	ClassLoader classLoader;
 	boolean puedeTocar=false;
+	boolean puedereiniciar=false;
 	public Circulo(Logica mundo) {
 		this.mundo=mundo;
 		minim= new Minim(this.mundo.app);
@@ -37,26 +38,35 @@ public class Circulo implements Runnable{
 	}
 	
 	public boolean sonarNota(){
-//	System.out.println(centecimas);
-	//	System.out.println(song.isPlaying());
-		if(!song.isPlaying() && puedeTocar){
-			song.cue(0); 
-			song.play();
+//		System.out.println(centecimas);
+		//	System.out.println(song.isPlaying());
+			if(!song.isPlaying() && puedeTocar){
+				if(puedereiniciar){
+				
+				song.play();
+				
+				puedereiniciar=false;
+				}
+				
+			}
 			
+			
+			
+			
+			if(centecimas==segundosTempo){
+				song.rewind();
+				puedeTocar=false;
+				song.pause(); 
+			
+			
+				
+				centecimas=0;
+				
+			
+				return true;
+			}
+			return false;
 		}
-		
-		
-		if(song.isPlaying() && centecimas==segundosTempo){
-			puedeTocar=false;
-			song.pause(); 
-			song.rewind(); 
-			song.pause(); 
-			centecimas=0;
-		
-			return true;
-		}
-		return false;
-	}
 	
 	
 	

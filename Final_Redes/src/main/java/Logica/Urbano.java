@@ -30,6 +30,7 @@ public class Urbano implements Runnable{
 		
 		beat= new BeatDetect();
 		new Thread(this).start();
+	
 		
 	}
 	

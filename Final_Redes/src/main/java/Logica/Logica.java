@@ -1,11 +1,9 @@
 package Logica;
 
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
-
-import ddf.minim.Minim;
 import processing.core.PApplet;
 import programaciondmi.per.modelo.Instrumento;
 import programaciondmi.per.modelo.NotaMusical;
@@ -25,6 +23,8 @@ NotaMusical tempPercusion;
 NotaMusical tempUrbano;
 NotaMusical tempElectronico;
 
+MakeyMakey makey;
+
 Circulo percucionClase;
 Electronico electronicoClase;
 Urbano urbanoClse;
@@ -38,6 +38,8 @@ Thread hiloLogica;
 		urbano= new LinkedList<NotaMusical>();
 		electronico=new LinkedList<NotaMusical>();
 		
+	
+		
 	tcp= new ComunicacionTCP();
 	hilito= new Thread(tcp.hilo());
 	hilito.start();
@@ -48,17 +50,21 @@ Thread hiloLogica;
 	//	new Thread(Comunicacion.getInstance()).start();;
 		
 		percucionClase= new Circulo(this);
+		makey= new MakeyMakey(app, this);
 		urbanoClse= new Urbano(this);
 		electronicoClase= new Electronico(this);
 		
+	
 		hiloLogica=new Thread(this);
 		hiloLogica.start();
 	}
 	
 	public void pintar(){
+	
 		percucionClase.pintar();
 		urbanoClse.pintar();
 		electronicoClase.pintar();
+		makey.pintar();
 
 	}
 	

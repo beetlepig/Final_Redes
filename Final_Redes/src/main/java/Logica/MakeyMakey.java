@@ -45,7 +45,8 @@ public class MakeyMakey {
 		//aqui el color de la linea
 		this.mundo.stroke(0,255,0);
 		mundo.line(mundo.width/2-100, mundo.height/2-230, mundo.width/2+diferencia, mundo.height/2-230);
-		
+		this.mundo.stroke(0,30);
+		mundo.line(mundo.width/2-100, mundo.height/2-230, mundo.width/2+100, mundo.height/2-230);
 		mundo.textSize(25);
 		mundo.fill(0);
 		if(presionadoDO){
@@ -275,7 +276,7 @@ public class MakeyMakey {
 						
 						if(presionado && tempo<=5){
 							if(diferencia<100){
-						diferencia+=3.5F;
+						diferencia+=4F;
 							}
 						}
 						if(segundos==0 && !presionado){
